@@ -19,7 +19,12 @@ const routes = [
   { path: '/papers', name: 'PaperList', component: () => import('../views/PaperList.vue') },
   { path: '/papers/create', name: 'PaperCreate', component: () => import('../views/PaperCreate.vue') },
   { path: '/papers/:id', name: 'PaperDetail', component: () => import('../views/PaperDetail.vue') },
-  { path: '/papers/:id/edit', name: 'PaperEdit', component: () => import('../views/PaperEdit.vue') }
+  { path: '/papers/:id/edit', name: 'PaperEdit', component: () => import('../views/PaperEdit.vue') },
+  // 考试管理
+  { path: '/exam/rooms', name: 'ExamRoomManage', component: () => import('../views/exam/ExamRoomManage.vue') },
+  { path: '/exam/list', name: 'ExamManage', component: () => import('../views/exam/ExamManage.vue') },
+  { path: '/exam/detail/:id', name: 'ExamDetail', component: () => import('../views/exam/ExamDetail.vue') },
+  { path: '/exam/grading/:examId', name: 'ExamGrading', component: () => import('../views/exam/ExamGrading.vue') }
 ]
 
 const router = createRouter({

@@ -69,6 +69,20 @@
             <el-icon><Document /></el-icon>
             <span>自动组卷</span>
           </el-menu-item>
+          <el-sub-menu index="exam">
+            <template #title>
+              <el-icon><Tickets /></el-icon>
+              <span>考试管理</span>
+            </template>
+            <el-menu-item index="/exam/rooms">
+              <el-icon><OfficeBuilding /></el-icon>
+              <span>考场管理</span>
+            </el-menu-item>
+            <el-menu-item index="/exam/list">
+              <el-icon><List /></el-icon>
+              <span>考试列表</span>
+            </el-menu-item>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
       <el-main class="main">
@@ -98,6 +112,8 @@ const activeMenu = computed(() => {
   if (p.startsWith('/properties/question')) return '/properties'
   if (p.startsWith('/papers/create')) return '/papers/create'
   if (p.startsWith('/papers')) return '/papers'
+  if (p.startsWith('/exam/rooms')) return '/exam/rooms'
+  if (p.startsWith('/exam')) return '/exam/list'
   return '/questions'
 })
 

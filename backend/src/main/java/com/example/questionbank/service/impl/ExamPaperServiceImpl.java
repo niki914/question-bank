@@ -356,6 +356,7 @@ public class ExamPaperServiceImpl implements ExamPaperService {
                     detail.setQuestionDifficulty(q.getDifficulty());
                     detail.setQuestionChapter(q.getChapter());
                     detail.setKnowledgePoints(q.getKnowledgePoints());
+                    detail.setContentJson(q.getContentJson());
                 }
                 details.add(detail);
             }

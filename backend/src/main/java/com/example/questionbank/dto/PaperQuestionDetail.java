@@ -14,4 +14,6 @@ public class PaperQuestionDetail {
     private String questionDifficulty;
     private String questionChapter;
     private String knowledgePoints;
+    /** 题目 content_json，供前端渲染选项/填空/主观 */
+    private String contentJson;
 }

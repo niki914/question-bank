@@ -102,6 +102,78 @@ CREATE TABLE IF NOT EXISTS exam_paper_question (
     FOREIGN KEY (question_id) REFERENCES question(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='试卷题目关联表';
 
+-- ============================================================
+-- 第五部分：考试管理子系统（与组卷互斥：引用 exam_paper）
+-- ============================================================
+
+-- 考场表
+CREATE TABLE IF NOT EXISTS exam_room (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    room_name VARCHAR(100) NOT NULL COMMENT '考场名称',
+    location VARCHAR(200) COMMENT '考场地点',
+    capacity INT NOT NULL DEFAULT 30 COMMENT '容纳人数',
+    teacher_id BIGINT NOT NULL COMMENT '负责教师ID',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_teacher (teacher_id),
+    FOREIGN KEY (teacher_id) REFERENCES teacher(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='考场表';
+
+-- 考试表（关联已提交的 exam_paper）
+CREATE TABLE IF NOT EXISTS exam (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    exam_name VARCHAR(200) NOT NULL COMMENT '考试名称',
+    paper_id BIGINT NOT NULL COMMENT '引用的试卷ID（SUBMITTED状态）',
+    room_id BIGINT NOT NULL COMMENT '考场ID',
+    teacher_id BIGINT NOT NULL COMMENT '出题/监考教师ID',
+    start_time DATETIME NOT NULL COMMENT '开始时间',
+    duration_minutes INT NOT NULL DEFAULT 120 COMMENT '考试时长（分钟）',
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING' COMMENT 'PENDING/ONGOING/GRADING/FINISHED',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_paper (paper_id),
+    INDEX idx_room (room_id),
+    INDEX idx_teacher (teacher_id),
+    INDEX idx_status (status),
+    FOREIGN KEY (paper_id) REFERENCES exam_paper(id),
+    FOREIGN KEY (room_id) REFERENCES exam_room(id),
+    FOREIGN KEY (teacher_id) REFERENCES teacher(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='考试表';
+
+-- 考生答题记录表
+CREATE TABLE IF NOT EXISTS exam_student_answer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    exam_id BIGINT NOT NULL COMMENT '考试ID',
+    student_name VARCHAR(100) NOT NULL COMMENT '考生姓名',
+    student_no VARCHAR(50) NOT NULL COMMENT '考生学号',
+    question_id BIGINT NOT NULL COMMENT '题目ID',
+    answer_content TEXT COMMENT '作答内容（选择题：选项label；填空：逗号分隔答案；主观：文本/图片路径）',
+    answer_image_path VARCHAR(500) COMMENT '主观题作答图片路径',
+    auto_score DECIMAL(5,2) COMMENT '客观题自动判分',
+    teacher_score DECIMAL(5,2) COMMENT '教师给分（主观题）',
+    final_score DECIMAL(5,2) COMMENT '最终得分',
+    graded_by BIGINT COMMENT '评分教师ID',
+    graded_time DATETIME COMMENT '评分时间',
+    submit_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '提交时间',
+    INDEX idx_exam (exam_id),
+    INDEX idx_student (exam_id, student_no),
+    FOREIGN KEY (exam_id) REFERENCES exam(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='考生答题记录表';
+
+-- 考生成绩汇总表（每场考试每人一行）
+CREATE TABLE IF NOT EXISTS exam_student_result (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    exam_id BIGINT NOT NULL COMMENT '考试ID',
+    student_name VARCHAR(100) NOT NULL COMMENT '考生姓名',
+    student_no VARCHAR(50) NOT NULL COMMENT '考生学号',
+    total_score DECIMAL(5,2) DEFAULT 0 COMMENT '汇总总分',
+    status VARCHAR(20) NOT NULL DEFAULT 'SUBMITTED' COMMENT 'SUBMITTED/GRADED',
+    submit_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_exam_student (exam_id, student_no),
+    INDEX idx_exam (exam_id),
+    FOREIGN KEY (exam_id) REFERENCES exam(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='考生成绩汇总表';
+
 -- 种子数据：教师
 INSERT INTO teacher (name, department) VALUES
 ('欧毓毅', '计算机学院'),
