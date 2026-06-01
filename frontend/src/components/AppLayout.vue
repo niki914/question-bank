@@ -51,6 +51,20 @@
               <span>知识点管理</span>
             </el-menu-item>
           </el-sub-menu>
+          <el-sub-menu index="paper">
+            <template #title>
+              <el-icon><Document /></el-icon>
+              <span>手动组卷</span>
+            </template>
+            <el-menu-item index="/papers">
+              <el-icon><List /></el-icon>
+              <span>试卷列表</span>
+            </el-menu-item>
+            <el-menu-item index="/papers/create">
+              <el-icon><Plus /></el-icon>
+              <span>新建试卷</span>
+            </el-menu-item>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
       <el-main class="main">
@@ -77,6 +91,8 @@ const activeMenu = computed(() => {
   if (p.startsWith('/properties/chapters')) return '/properties/chapters'
   if (p.startsWith('/properties/knowledge-points')) return '/properties/knowledge-points'
   if (p.startsWith('/properties/question')) return '/properties'
+  if (p.startsWith('/papers/create')) return '/papers/create'
+  if (p.startsWith('/papers')) return '/papers'
   return '/questions'
 })
 

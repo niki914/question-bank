@@ -12,7 +12,12 @@ const routes = [
   { path: '/properties', name: 'PropertiesDashboard', component: () => import('../views/properties/PropertiesDashboard.vue') },
   { path: '/properties/chapters', name: 'ChapterManage', component: () => import('../views/properties/ChapterManage.vue') },
   { path: '/properties/knowledge-points', name: 'KnowledgePointManage', component: () => import('../views/properties/KnowledgePointManage.vue') },
-  { path: '/properties/question/:id', name: 'QuestionPropertiesEdit', component: () => import('../views/properties/QuestionPropertiesEdit.vue') }
+  { path: '/properties/question/:id', name: 'QuestionPropertiesEdit', component: () => import('../views/properties/QuestionPropertiesEdit.vue') },
+  // 手动组卷
+  { path: '/papers', name: 'PaperList', component: () => import('../views/PaperList.vue') },
+  { path: '/papers/create', name: 'PaperCreate', component: () => import('../views/PaperCreate.vue') },
+  { path: '/papers/:id', name: 'PaperDetail', component: () => import('../views/PaperDetail.vue') },
+  { path: '/papers/:id/edit', name: 'PaperEdit', component: () => import('../views/PaperEdit.vue') }
 ]
 
 const router = createRouter({
