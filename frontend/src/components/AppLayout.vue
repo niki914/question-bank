@@ -51,6 +51,10 @@
               <span>知识点管理</span>
             </el-menu-item>
           </el-sub-menu>
+          <el-menu-item index="/papers/auto-generate">
+            <el-icon><Document /></el-icon>
+            <span>自动组卷</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main class="main">
@@ -73,6 +77,7 @@ const activeMenu = computed(() => {
   const p = route.path
   if (p.startsWith('/questions/create')) return '/questions/create'
   if (p.startsWith('/questions')) return '/questions'
+  if (p.startsWith('/papers/auto-generate')) return '/papers/auto-generate'
   if (p === '/properties') return '/properties'
   if (p.startsWith('/properties/chapters')) return '/properties/chapters'
   if (p.startsWith('/properties/knowledge-points')) return '/properties/knowledge-points'
