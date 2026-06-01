@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS question (
     difficulty VARCHAR(10) NOT NULL COMMENT '难度: EASY/MEDIUM/HARD',
     chapter VARCHAR(100) COMMENT '所属章节',
     knowledge_points VARCHAR(500) COMMENT '知识点(逗号分隔)',
+    error_rate DECIMAL(5,2) DEFAULT 0 COMMENT '出错率',
+    common_mistakes VARCHAR(500) COMMENT '易错点',
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_teacher (teacher_id),
@@ -62,6 +64,7 @@ CREATE TABLE IF NOT EXISTS question_knowledge_point (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     question_id BIGINT NOT NULL COMMENT '题目ID',
     knowledge_point_id BIGINT NOT NULL COMMENT '知识点ID',
+    UNIQUE KEY uk_question_kp (question_id, knowledge_point_id),
     INDEX idx_question (question_id),
     INDEX idx_knowledge_point (knowledge_point_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='题目-知识点关联表';

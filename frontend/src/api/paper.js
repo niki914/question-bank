@@ -1,5 +1,6 @@
 import request from './request'
 
+// 手动组卷 API
 export function createPaper(data) {
   return request.post('/papers', data)
 }
@@ -26,4 +27,9 @@ export function validatePaper(id) {
 
 export function submitPaper(id) {
   return request.post(`/papers/${id}/submit`)
+}
+
+// 自动组卷 API
+export function autoGeneratePaper(data) {
+  return request.post('/papers/auto-generate', data)
 }
